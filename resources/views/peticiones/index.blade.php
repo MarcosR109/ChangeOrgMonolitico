@@ -20,7 +20,7 @@
                                         <div class="d-flex align-items-center mt-5">
                                             <img src="https://via.placeholder.com/40" class="rounded-circle me-2"
                                                  alt="Tamara Contreras del Pino">
-                                            <small class="text-muted"><?= $users[0]['name'] ?></small>
+                                            <small class="text-muted"><?= $contenido->user->name ?></small>
                                         </div>
                                         <a href="#" class="text-primary">Saber más</a>
                                     </div>
