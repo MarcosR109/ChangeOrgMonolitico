@@ -22,7 +22,7 @@
                                                  alt="Tamara Contreras del Pino">
                                             <small class="text-muted"><?= $contenido->user->name ?></small>
                                         </div>
-                                        <a href="#" class="text-primary">Saber más</a>
+                                        <a href="{{route('peticiones.show',$contenido->id)}}" class="text-primary">Saber más</a>
                                     </div>
                                 </div>
                             </div>

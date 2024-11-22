@@ -17,9 +17,9 @@
 </style>
 <nav class="navbar navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand flex-row" href="#">change.org</a>
+        <a class="navbar-brand flex-row" href="{{route('home')}}">change.org</a>
         <div>
-            <a href="#"
+            <a href="{{route('peticiones.create')}}"
                class="me-3 link-danger nav-item link-underline-opacity-0">Inicia
                 una petición</a>
             <a href="{{route('peticiones.index')}}"

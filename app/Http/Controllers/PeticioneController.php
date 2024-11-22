@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\Peticione;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PeticioneController extends Controller
 {
@@ -41,6 +43,12 @@ class PeticioneController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $content = Peticione::query()->where('id', '=', $id)->get()->first();
+        return view('peticiones.show', compact('content'));
+    }
+
     public function peticionesFirmadas()
     {
         $content = Peticione::query()->where('estado', '=', 'aceptada')->get();
@@ -49,7 +57,8 @@ class PeticioneController extends Controller
 
     public function create()
     {
-        return view('peticiones.create');
+        $categorias = Categoria::all();
+        return view('peticiones.create',compact('categorias'));
     }
 
     public function update(Request $request)
@@ -58,6 +67,32 @@ class PeticioneController extends Controller
 
     public function store(Request $request)
     {
+        $userid = 1;
+        $categoria = 1;
+        $estado = "pendiente";
+        $firmantes=0;
+        $validator  = Validator::make($request->all(), [
+            'titulo' => 'string|required',
+            'descripcion' => 'string|required',
+            'destinatario' => 'string|required',
+        ]);
+        try {
+            $validator->validate();
+        }
+        catch (\Exception $e) {
+            return view('home');
+        }
+        $peticion = new Peticione();
+        $peticion['titulo'] = $request->get('titulo');
+        $peticion['user_id'] = $userid;
+        $peticion['categoria_id'] = $categoria;
+        $peticion['estado'] = $estado;
+        $peticion['descripcion'] = $request->get('descripcion');
+        $peticion['destinatario'] = $request->get('destinatario');
+        $peticion['firmantes']=$firmantes;
+        $peticion->save();
+        $content = $peticion;
+        return view('peticiones.show', compact('content'));
     }
 
     public function delete(Peticione $peticione)
