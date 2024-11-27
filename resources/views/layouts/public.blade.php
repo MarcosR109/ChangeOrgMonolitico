@@ -8,6 +8,7 @@
     <link href="estilos.css" rel="stylesheet">
     <script async src="{{ asset('js/11391265293.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" href="{{ asset('images.png') }}">
 </head>
 <body>
 <style>
@@ -17,14 +18,13 @@
 </style>
 <nav class="navbar navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand flex-row" href="{{route('home')}}">change.org</a>
+        <a class="navbar-brand flex-row text-danger h1" href="{{route('home')}}">Change.org</a>
         <div>
             <a href="{{route('peticiones.create')}}"
                class="me-3 link-danger nav-item link-underline-opacity-0">Inicia
                 una petición</a>
             <a href="{{route('peticiones.index')}}"
-               class="me-3 link-danger nav-item link-underline-opacity-0">Mis
-                peticiones</a>
+               class="me-3 link-danger nav-item link-underline-opacity-0">Peticiones</a>
             <a href="#"
                class="me-3 link-danger nav-item link-underline-opacity-0">Programa
                 de socios/as</a>

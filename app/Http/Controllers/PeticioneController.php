@@ -30,6 +30,22 @@ class PeticioneController extends Controller
     Route::get('peticiones/edit/{id}', 'update')->name('peticiones.edit');
 });
 */
+    public function delete(Peticione $id)
+    {
+        $this->delete($id);
+    }
+
+    public function firmar($peticioneId)
+    {   $userId = 2;
+        $peticione = Peticione::query()->findOrFail($peticioneId);
+        $peticione->firmantes = $peticione->firmantes+1;
+        $peticione->save();
+        var_dump($peticione->firmantes);
+        $user=User::query()->find($userId);
+        $user->firmas()->attach($peticione->id);
+        $user->save();
+        return response()->json(['Message' => 'Petición firmada', 'Data' => $peticione]);
+    }
 
     public function listMine()
     {
@@ -58,7 +74,7 @@ class PeticioneController extends Controller
     public function create()
     {
         $categorias = Categoria::all();
-        return view('peticiones.create',compact('categorias'));
+        return view('peticiones.create', compact('categorias'));
     }
 
     public function update(Request $request)
@@ -67,20 +83,19 @@ class PeticioneController extends Controller
 
     public function store(Request $request)
     {
+        try {
         $userid = 1;
         $categoria = 1;
         $estado = "pendiente";
-        $firmantes=0;
-        $validator  = Validator::make($request->all(), [
+        $firmantes = 0;
+        $validator = Validator::make($request->all(), [
             'titulo' => 'string|required',
             'descripcion' => 'string|required',
             'destinatario' => 'string|required',
         ]);
-        try {
             $validator->validate();
-        }
-        catch (\Exception $e) {
-            return view('home');
+        } catch (\Exception $e) {
+            return back()->withError($e->getMessage());
         }
         $peticion = new Peticione();
         $peticion['titulo'] = $request->get('titulo');
@@ -89,13 +104,9 @@ class PeticioneController extends Controller
         $peticion['estado'] = $estado;
         $peticion['descripcion'] = $request->get('descripcion');
         $peticion['destinatario'] = $request->get('destinatario');
-        $peticion['firmantes']=$firmantes;
+        $peticion['firmantes'] = $firmantes;
         $peticion->save();
         $content = $peticion;
         return view('peticiones.show', compact('content'));
-    }
-
-    public function delete(Peticione $peticione)
-    {
     }
 }

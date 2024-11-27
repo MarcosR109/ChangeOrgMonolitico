@@ -2,11 +2,12 @@
 @section('content')
     <!-- Main Section -->
     <style>
-        .translucido{
+        .translucido {
             background-color: rgba(255, 220, 220, 0.767);
 
         }
-        .badge-element:hover{
+
+        .badge-element:hover {
             background-color: #dc3545;
         }
     </style>
@@ -46,8 +47,10 @@
                                        class="link-danger">Victorias cada
                                 día</a>.</p>
 
-                        <button class="btn btn-danger btn-lg">Inicia una
-                            petición</button>
+                        <button class="btn btn-danger btn-lg">
+                            <a class = "text-white underline-opacity-0" href="{{route('peticiones.create')}}">Inicia una
+                                petición</a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -78,7 +81,8 @@
                         <h5 class="card-title">Soy Mayor, NO idiota.
                             Increíble lo que hemos logrado ¡Gracias!</h5>
                         <p
-                            class="card-text">"Cuando inicié change.org/SoyMayorNOidiota muchas personas pensarían que dónde iba un viejo como yo a pedir un cambio a los grandes bancos..."</p>
+                            class="card-text">"Cuando inicié change.org/SoyMayorNOidiota muchas personas pensarían que
+                            dónde iba un viejo como yo a pedir un cambio a los grandes bancos..."</p>
                         <a href="#" class="btn btn-outline-danger">Más</a>
                     </div>
                     <div class="card-footer text-muted">

@@ -21,45 +21,48 @@
                                             <img src="https://via.placeholder.com/40" class="rounded-circle me-2"
                                                  alt="Tamara Contreras del Pino">
                                             <small class="text-muted"><?= $contenido->user->name ?></small>
+                                            <a
+                                                href="{{route('peticiones.show',$contenido->id)}}"
+                                                class="text-primary mx-3">Saber más</a>
                                         </div>
-                                        <a href="{{route('peticiones.show',$contenido->id)}}" class="text-primary">Saber más</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Repite el bloque de la card para más peticiones -->
                     </div>
-                @endforeach
 
-                <!-- Temas destacados -->
-                <div class="col-lg-4 col-sm-12">
-                    <h4 class="fw-bold">Temas destacados</h4>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Sanidad</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Animales</span>
-                    <span class="badge bg-light text-dark border m-1 ">Medio
+                    <!-- Repite el bloque de la card para más peticiones -->
+            </div>
+            @endforeach
+
+            <!-- Temas destacados -->
+            <div class="col-lg-4 col-sm-12">
+                <h4 class="fw-bold">Temas destacados</h4>
+                <span
+                    class="badge bg-light text-dark border m-1 ">Sanidad</span>
+                <span
+                    class="badge bg-light text-dark border m-1 ">Animales</span>
+                <span class="badge bg-light text-dark border m-1 ">Medio
                 ambiente</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Educación</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Justicia
+                <span
+                    class="badge bg-light text-dark border m-1 ">Educación</span>
+                <span
+                    class="badge bg-light text-dark border m-1 ">Justicia
                 económica</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Refugiados</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Lgtb</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Alimentación</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Feminismo</span>
-                    <span
-                        class="badge bg-light text-dark border m-1 ">Mujeres
+                <span
+                    class="badge bg-light text-dark border m-1 ">Refugiados</span>
+                <span
+                    class="badge bg-light text-dark border m-1 ">Lgtb</span>
+                <span
+                    class="badge bg-light text-dark border m-1 ">Alimentación</span>
+                <span
+                    class="badge bg-light text-dark border m-1 ">Feminismo</span>
+                <span
+                    class="badge bg-light text-dark border m-1 ">Mujeres
                 en México</span>
-                    </ul>
-                </div>
+                </ul>
             </div>
         </div>
+    </div>
     </div>
 @endsection

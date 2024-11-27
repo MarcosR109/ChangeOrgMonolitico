@@ -18,7 +18,11 @@ class Peticione extends Model
     {
         return $this-> belongsTo('App\Models\Categoria');
     }
-    public function firmas(){
-        return $this->belongsToMany(User::class,'peticione_user');
+    public function firmas()
+    {
+        return $this->belongsToMany(User::class, 'peticione_user');
+    }
+    public function file(){
+        return $this-> hasOne(File::class);
     }
 }

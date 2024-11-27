@@ -46,6 +46,6 @@ class User extends Authenticatable
         return $this->hasMany(Peticione::class);
     }
     public function firmas(){
-        return $this->hasMany(Peticione::class);
+        return $this->belongsToMany(Peticione::class,'peticione_user');
     }
 }
