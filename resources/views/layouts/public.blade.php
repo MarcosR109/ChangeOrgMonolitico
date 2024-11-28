@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+@php use Illuminate\Support\Facades\Auth; @endphp
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Change.org</title>
@@ -12,7 +13,7 @@
 </head>
 <body>
 <style>
-    nav * a{
+    nav * a {
         text-decoration: none;
     }
 </style>
@@ -28,13 +29,25 @@
             <a href="#"
                class="me-3 link-danger nav-item link-underline-opacity-0">Programa
                 de socios/as</a>
+            <?php if (Auth::check()){ ?>
+            <a class=" fs‐4 m‐2 link-danger" href="{{route('peticiones.mine')}}">Mostrar mis peticiones</a>
+            <a class=" fs‐4 m‐2 link-danger" href="{{route('logout')}}"
+               onclick="event.preventDefault();document.getElementById('logout').submit();">Cerrar sesión</a>
+            <form method="POST" id="logout" action="{{route('logout')}}">
+                @csrf
+            </form>
         </div>
+        <?php }else{ ?>
+        <a class="me-3 link-danger nav-item link-underline-opacity-0" href="{{route('register')}}">Register</a>
+        <a class="me-3 link-danger nav-item link-underline-opacity-0" href="{{route('login')}}">Login</a>
+        <?php } ?>
+    </div>
     </div>
 </nav>
 
 <!-- Contenido de la página -->
 
-    @yield('content')
+@yield('content')
 
 
 <!-- Footer -->
@@ -80,8 +93,8 @@
                             cookies</a></li>
                     <li><a href="#"
                            class="text-danger">Términos</a></li>
-                    <li> <a href="#"
-                            class="text-danger">Cookies</a></li>
+                    <li><a href="#"
+                           class="text-danger">Cookies</a></li>
                 </ul>
             </div>
             <!-- Redes sociales -->

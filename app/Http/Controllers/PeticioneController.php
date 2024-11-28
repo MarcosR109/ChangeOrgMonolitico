@@ -6,6 +6,7 @@ use App\Models\Categoria;
 use App\Models\Peticione;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PeticioneController extends Controller
@@ -36,12 +37,13 @@ class PeticioneController extends Controller
     }
 
     public function firmar($peticioneId)
-    {   $userId = 2;
+    {
+        $userId = 2;
         $peticione = Peticione::query()->findOrFail($peticioneId);
-        $peticione->firmantes = $peticione->firmantes+1;
+        $peticione->firmantes = $peticione->firmantes + 1;
         $peticione->save();
-        var_dump($peticione->firmantes);
-        $user=User::query()->find($userId);
+        //   var_dump($peticione->firmantes);
+        $user = User::query()->find($userId);
         $user->firmas()->attach($peticione->id);
         $user->save();
         return response()->json(['Message' => 'Petición firmada', 'Data' => $peticione]);
@@ -65,10 +67,16 @@ class PeticioneController extends Controller
         return view('peticiones.show', compact('content'));
     }
 
-    public function peticionesFirmadas()
+    public function peticionesFirmadas(Request $request)
     {
-        $content = Peticione::query()->where('estado', '=', 'aceptada')->get();
-        return view('peticiones.firmadas', compact('content'));
+        try {
+            $id = Auth::id();
+            $usuario = User::findOrFail($id);
+            $peticiones = $usuario->firmas;
+        } catch (\Exception $exception) {
+            return back()->withError($exception->getMessage())->withInput();
+        }
+        return view('peticiones.index', compact('peticiones'));
     }
 
     public function create()
@@ -84,15 +92,15 @@ class PeticioneController extends Controller
     public function store(Request $request)
     {
         try {
-        $userid = 1;
-        $categoria = 1;
-        $estado = "pendiente";
-        $firmantes = 0;
-        $validator = Validator::make($request->all(), [
-            'titulo' => 'string|required',
-            'descripcion' => 'string|required',
-            'destinatario' => 'string|required',
-        ]);
+            $userid = 1;
+            $categoria = 1;
+            $estado = "pendiente";
+            $firmantes = 0;
+            $validator = Validator::make($request->all(), [
+                'titulo' => 'string|required',
+                'descripcion' => 'string|required',
+                'destinatario' => 'string|required',
+            ]);
             $validator->validate();
         } catch (\Exception $e) {
             return back()->withError($e->getMessage());
