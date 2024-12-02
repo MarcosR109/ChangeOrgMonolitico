@@ -20,7 +20,6 @@
                                     <small class="text-muted"><?= $content->user->name ?></small>
                                 </div>
                             </div>
-                            <?php $user = $content->user ?>
                             <!-- Botón en la esquina inferior derecha -->
                             <form method="POST" action="{{route('peticiones.firmar',$content)}}" enctype="multipart/form-data"
                                   class="position-absolute bottom-0 end-0 m-3">
