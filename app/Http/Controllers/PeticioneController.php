@@ -38,23 +38,27 @@ class PeticioneController extends Controller
 
     public function firmar($peticioneId)
     {
-        $userId = 2;
+        $userId = Auth::id();
         $peticione = Peticione::query()->findOrFail($peticioneId);
-        $peticione->firmantes = $peticione->firmantes + 1;
-        $peticione->save();
-        //   var_dump($peticione->firmantes);
         $user = User::query()->find($userId);
-        $user->firmas()->attach($peticione->id);
-        $user->save();
-        return response()->json(['Message' => 'Petición firmada', 'Data' => $peticione]);
+        if (!$user->firmas()->where("peticione_id", "=", $peticione->id)->first()) {
+            $user->firmas()->attach($peticione->id);
+            $user->save();
+            $content = peticione::all();
+            $peticione->firmantes = $peticione->firmantes + 1;
+            $peticione->save();
+            return view('peticiones.index', compact('content'));
+        }
+        $content = $peticione->all();
+        return view('peticiones.index', compact('content'));
     }
 
     public function listMine()
     {
-        $id = 1;
+        $id = Auth::id();
         $content = Peticione::query()->where('user_id', '=', $id)->get();
         if ($content) {
-            return view('peticiones.mine', compact('content'));
+            return view('peticiones.index', compact('content'));
         } else {
             $content = Peticione::all();
             return view('peticiones.index', compact('content'));
@@ -72,11 +76,11 @@ class PeticioneController extends Controller
         try {
             $id = Auth::id();
             $usuario = User::findOrFail($id);
-            $peticiones = $usuario->firmas;
+            $content = $usuario->firmas;
         } catch (\Exception $exception) {
             return back()->withError($exception->getMessage())->withInput();
         }
-        return view('peticiones.index', compact('peticiones'));
+        return view('peticiones.index', compact('content'));
     }
 
     public function create()
@@ -92,7 +96,7 @@ class PeticioneController extends Controller
     public function store(Request $request)
     {
         try {
-            $userid = 1;
+            $userid = Auth::id();
             $categoria = 1;
             $estado = "pendiente";
             $firmantes = 0;

@@ -13,7 +13,6 @@
                                 <img src="https://via.placeholder.com/500x300" alt
                                      class="img-fluid col-12 col-sm-4 rounded-2 me-3 mb-3 mb-sm-0">
                                 <div>
-
                                     <h5 class="card-title"><?= $contenido['titulo'] ?></h5>
                                     <p class="card-text"><?= $contenido['descripcion'] ?></p>
                                     <div class="d-flex justify-content-between">
@@ -31,9 +30,9 @@
                         </div>
                     </div>
 
-                    <!-- Repite el bloque de la card para más peticiones -->
+                @endforeach   <!-- Repite el bloque de la card para más peticiones -->
             </div>
-            @endforeach
+
 
             <!-- Temas destacados -->
             <div class="col-lg-4 col-sm-12">

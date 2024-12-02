@@ -21,17 +21,21 @@
     <div class="container">
         <a class="navbar-brand flex-row text-danger h1" href="{{route('home')}}">Change.org</a>
         <div>
-            <a href="{{route('peticiones.create')}}"
+
+            <a @if(Auth::check())
+                   href="{{route('peticiones.create')}}"
+            @else
+                href="{{route("register")}}"
+               @endif
                class="me-3 link-danger nav-item link-underline-opacity-0">Inicia
                 una petición</a>
+
             <a href="{{route('peticiones.index')}}"
                class="me-3 link-danger nav-item link-underline-opacity-0">Peticiones</a>
-            <a href="#"
-               class="me-3 link-danger nav-item link-underline-opacity-0">Programa
-                de socios/as</a>
             <?php if (Auth::check()){ ?>
             <a class=" fs‐4 m‐2 link-danger" href="{{route('peticiones.mine')}}">Mostrar mis peticiones</a>
-            <a class=" fs‐4 m‐2 link-danger" href="{{route('logout')}}"
+            <a class=" fs‐4 m‐2 link-danger" href="{{route('peticiones.peticionesfirmadas')}}">Mostrar peticiones firmadas</a>
+            <a class=" fs‐4 m‐2 link-danger mx-2" href="{{route('logout')}}"
                onclick="event.preventDefault();document.getElementById('logout').submit();">Cerrar sesión</a>
             <form method="POST" id="logout" action="{{route('logout')}}">
                 @csrf
