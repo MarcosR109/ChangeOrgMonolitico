@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\File;
 use App\Models\Peticione;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Console\Input\Input;
 
 class PeticioneController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $content = Peticione::all();
-        $users = User::all();
-        return view('peticiones.index', compact('content', 'users'));
+        $categoriaId = $request->input('categoria');
+        if ($categoriaId) {
+            $content = Peticione::query()->where('categoria_id', '=', $categoriaId)->get();
+        } else {
+            $content = Peticione::all();
+        }
+        $categoria = Categoria::all();
+        return view('peticiones.index', compact('content', 'categoria'));
     }
 
     /*Route::controller(\App\Http\Controllers\PeticioneController::class)->group(function () {
@@ -41,27 +48,33 @@ class PeticioneController extends Controller
         $userId = Auth::id();
         $peticione = Peticione::query()->findOrFail($peticioneId);
         $user = User::query()->find($userId);
+        $categoria=Categoria::all();
         if (!$user->firmas()->where("peticione_id", "=", $peticione->id)->first()) {
             $user->firmas()->attach($peticione->id);
             $user->save();
             $content = peticione::all();
             $peticione->firmantes = $peticione->firmantes + 1;
             $peticione->save();
-            return view('peticiones.index', compact('content'));
+
+            return view('peticiones.index', compact('content',"categoria"));
         }
         $content = $peticione->all();
-        return view('peticiones.index', compact('content'));
+
+        return view('peticiones.index', compact('content','categoria'));
     }
 
     public function listMine()
     {
         $id = Auth::id();
+        $categoria = Categoria::all();
         $content = Peticione::query()->where('user_id', '=', $id)->get();
         if ($content) {
-            return view('peticiones.index', compact('content'));
+
+            return view('peticiones.index', compact('content',"categoria"));
         } else {
             $content = Peticione::all();
-            return view('peticiones.index', compact('content'));
+
+            return view('peticiones.index', compact('content',"categoria"));
         }
     }
 
@@ -80,7 +93,8 @@ class PeticioneController extends Controller
         } catch (\Exception $exception) {
             return back()->withError($exception->getMessage())->withInput();
         }
-        return view('peticiones.index', compact('content'));
+        $categoria = Categoria::all();
+        return view('peticiones.index', compact('content', 'categoria'));
     }
 
     public function create()
@@ -95,30 +109,68 @@ class PeticioneController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'titulo' => 'required|max:255',
+            'descripcion' => 'required',
+            'destinatario' => 'required',
+            'categoria' => 'required',
+            'file' => 'required',
+        ]);
+
+        $input = $request->all();
         try {
-            $userid = Auth::id();
-            $categoria = 1;
-            $estado = "pendiente";
-            $firmantes = 0;
-            $validator = Validator::make($request->all(), [
-                'titulo' => 'string|required',
-                'descripcion' => 'string|required',
-                'destinatario' => 'string|required',
-            ]);
-            $validator->validate();
-        } catch (\Exception $e) {
-            return back()->withError($e->getMessage());
+            $category = Categoria::query()->findOrFail($input['categoria']);
+            $user = Auth::user(); // Asociarlo al usuario autenticado
+
+            $peticion = new Peticione($input);
+            $peticion->categoria()->associate($category);
+            $peticion->user()->associate($user);
+
+            $peticion->firmantes = 0;
+            $peticion->estado = 'pendiente';
+
+            $res = $peticion->save();
+            if ($res) {
+                $res_file = $this->fileUpload($request, $peticion->id);
+                if ($res_file) {
+                    return redirect('/mispeticiones');
+                }
+                return back()->withError('Error creando la petición')->withInput();
+            }
+        } catch (\Exception $exception) {
+            return back()->withError($exception->getMessage())->withInput();
         }
-        $peticion = new Peticione();
-        $peticion['titulo'] = $request->get('titulo');
-        $peticion['user_id'] = $userid;
-        $peticion['categoria_id'] = $categoria;
-        $peticion['estado'] = $estado;
-        $peticion['descripcion'] = $request->get('descripcion');
-        $peticion['destinatario'] = $request->get('destinatario');
-        $peticion['firmantes'] = $firmantes;
-        $peticion->save();
-        $content = $peticion;
-        return view('peticiones.show', compact('content'));
+    }
+
+    public function fileUpload(Request $req, $peticione_id = null)
+    {
+        $file = $req->file('file');
+        $fileModel = new File;
+        $fileModel->peticione_id = $peticione_id;
+        if ($req->file('file')) {
+            //return $req->file('file');
+
+            $filename = $fileName = time() . '_' . $file->getClientOriginalName();
+            //      Storage::put($filename, file_get_contents($req->file('file')->getRealPath()));
+            $file->move('peticiones', $filename);
+
+            //  Storage::put($filename, file_get_contents($request->file('file')->getRealPath()));
+            //   $file->move('storage/', $name);
+
+
+            //$filePath = $req->file('file')->storeAs('/peticiones', $fileName, 'local');
+            //    $filePath = $req->file('file')->storeAs('/peticiones', $fileName, 'local');
+            // return $filePath;
+            $fileModel->name = $filename;
+            $fileModel->file_path = $filename;
+            $res = $fileModel->save();
+            return $fileModel;
+            if ($res) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        return 1;
     }
 }

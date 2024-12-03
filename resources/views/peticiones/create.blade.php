@@ -11,9 +11,10 @@
                             <!-- Formulario -->
                             <form action="{{ route('peticiones.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+
                                 <div class="mb-3">
                                     <label for="titulo" class="form-label fw-bold">Título de la petición</label>
-                                    <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Escribe el título" required>
+                                    <input type="text" id="titulo" name="titulo" class="form-control  @error("titulo") is invalid @enderror" placeholder="Escribe el título" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label fw-bold">Descripción</label>
@@ -30,6 +31,10 @@
                                         <option value={{$cat['id']}}>{{$cat['nombre']}}</option>
                                     @endforeach
                                     </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="file" class="form-label fw-bold">Foto</label>
+                                    <input type="file" id="file" name="file" class="form-control" placeholder="Foto" >
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-danger">Crear petición</button>
