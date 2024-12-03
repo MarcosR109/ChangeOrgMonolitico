@@ -10,7 +10,7 @@
                 <div class="col-lg-10 col-sm-12">
                     <div class="card my-3">
                         <div class="card-body d-flex flex-column flex-sm-row position-relative">
-                            <img src="https://via.placeholder.com/500x300" alt
+                            <img src="{{$content->file->file_path}}" style="width:300px; height:400px"
                                  class="img-fluid col-12 col-sm-4 rounded-2 me-3 mb-3 mb-sm-0">
                             <div class="d-flex flex-column w-100">
                                 <h5 class="card-title"><?= $content->titulo ?></h5>

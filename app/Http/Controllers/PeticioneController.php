@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\File;
 use App\Models\Peticione;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class PeticioneController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth')->except(['index','show']);
+    }
+
     public function index()
     {
         $content = Peticione::all();
@@ -85,7 +90,7 @@ class PeticioneController extends Controller
 
     public function create()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::orderBy('nombre','asc')->get();
         return view('peticiones.create', compact('categorias'));
     }
 
@@ -95,30 +100,64 @@ class PeticioneController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'titulo' => 'required|max:255',
+            'descripcion' => 'required',
+            'destinatario' => 'required',
+            'categoria' => 'required',
+            'foto' => 'required',
+        ]);
+        $input = $request->all();
         try {
-            $userid = Auth::id();
-            $categoria = 1;
-            $estado = "pendiente";
-            $firmantes = 0;
-            $validator = Validator::make($request->all(), [
-                'titulo' => 'string|required',
-                'descripcion' => 'string|required',
-                'destinatario' => 'string|required',
-            ]);
-            $validator->validate();
-        } catch (\Exception $e) {
-            return back()->withError($e->getMessage());
+            $category = Categoria::query()->findOrFail($input['categoria']);
+            $user = Auth::user(); //asociarlo al usuario authenticado
+            $peticion = new Peticione($input);
+            $peticion->categoria()->associate($category);
+            $peticion->user()->associate($user);
+            $peticion->firmantes = 0;
+            $peticion->estado = 'pendiente';
+            $res = $peticion->save();
+            if ($res) {
+                $res_file = $this->fileUpload($request, $peticion->id);
+                if ($res_file) {
+                    return redirect('/mispeticiones');
+                }
+                return back()->withError('Error creando la peticion')->withInput();
+            }
+        } catch (\Exception $exception) {
+            return back()->withError($exception->getMessage())->withInput();
         }
-        $peticion = new Peticione();
-        $peticion['titulo'] = $request->get('titulo');
-        $peticion['user_id'] = $userid;
-        $peticion['categoria_id'] = $categoria;
-        $peticion['estado'] = $estado;
-        $peticion['descripcion'] = $request->get('descripcion');
-        $peticion['destinatario'] = $request->get('destinatario');
-        $peticion['firmantes'] = $firmantes;
-        $peticion->save();
-        $content = $peticion;
-        return view('peticiones.show', compact('content'));
+    }
+
+    public function fileUpload(Request $req, $peticione_id = null)
+    {
+        $file = $req->file('foto');
+        $fileModel = new File;
+        $fileModel->peticione_id = $peticione_id;
+        if ($req->file('foto')) {
+            //return $req->file('file');
+
+            $filename = $fileName = time() . '_' . $file->getClientOriginalName();
+            //      Storage::put($filename, file_get_contents($req->file('file')->getRealPath()));
+            $file->move('peticiones', $filename);
+
+            //  Storage::put($filename, file_get_contents($request->file('file')->getRealPath()));
+            //   $file->move('storage/', $name);
+
+
+            //$filePath = $req->file('file')->storeAs('/peticiones', $fileName, 'local');
+            //    $filePath = $req->file('file')->storeAs('/peticiones', $fileName, 'local');
+            // return $filePath;
+            $fileModel->name = $filename;
+            $fileModel->file_path = $filename;
+            $res = $fileModel->save();
+            return $fileModel;
+            if ($res) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        return 1;
     }
 }
