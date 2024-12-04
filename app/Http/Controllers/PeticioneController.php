@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Console\Input\Input;
 
 class PeticioneController extends Controller
 {
@@ -16,11 +17,16 @@ class PeticioneController extends Controller
         $this->middleware('auth')->except(['index','show']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $content = Peticione::all();
-        $users = User::all();
-        return view('peticiones.index', compact('content', 'users'));
+        $categoriaId = $request->input('categoria');
+        if ($categoriaId) {
+            $content = Peticione::query()->where('categoria_id', '=', $categoriaId)->get();
+        } else {
+            $content = Peticione::all();
+        }
+        $categoria = Categoria::all();
+        return view('peticiones.index', compact('content', 'categoria'));
     }
 
     /*Route::controller(\App\Http\Controllers\PeticioneController::class)->group(function () {
@@ -46,27 +52,33 @@ class PeticioneController extends Controller
         $userId = Auth::id();
         $peticione = Peticione::query()->findOrFail($peticioneId);
         $user = User::query()->find($userId);
+        $categoria=Categoria::all();
         if (!$user->firmas()->where("peticione_id", "=", $peticione->id)->first()) {
             $user->firmas()->attach($peticione->id);
             $user->save();
             $content = peticione::all();
             $peticione->firmantes = $peticione->firmantes + 1;
             $peticione->save();
-            return view('peticiones.index', compact('content'));
+
+            return view('peticiones.index', compact('content',"categoria"));
         }
         $content = $peticione->all();
-        return view('peticiones.index', compact('content'));
+
+        return view('peticiones.index', compact('content','categoria'));
     }
 
     public function listMine()
     {
         $id = Auth::id();
+        $categoria = Categoria::all();
         $content = Peticione::query()->where('user_id', '=', $id)->get();
         if ($content) {
-            return view('peticiones.index', compact('content'));
+
+            return view('peticiones.index', compact('content',"categoria"));
         } else {
             $content = Peticione::all();
-            return view('peticiones.index', compact('content'));
+
+            return view('peticiones.index', compact('content',"categoria"));
         }
     }
 
@@ -85,7 +97,8 @@ class PeticioneController extends Controller
         } catch (\Exception $exception) {
             return back()->withError($exception->getMessage())->withInput();
         }
-        return view('peticiones.index', compact('content'));
+        $categoria = Categoria::all();
+        return view('peticiones.index', compact('content', 'categoria'));
     }
 
     public function create()
@@ -128,6 +141,7 @@ class PeticioneController extends Controller
             return back()->withError($exception->getMessage())->withInput();
         }
     }
+
 
     public function fileUpload(Request $req, $peticione_id = null)
     {

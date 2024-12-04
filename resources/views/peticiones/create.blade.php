@@ -14,6 +14,7 @@
                             <!-- Formulario -->
                             <form action="{{ route('peticiones.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+
                                 <div class="mb-3">
                                     <label for="titulo" class="form-label fw-bold">Título de la petición</label>
                                     <input type="text" name="titulo" class="form-control @error('titulo') is-invalid @enderror"
@@ -56,6 +57,7 @@
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-danger">Crear petición</button>
                                 </div>
+
                             </form>
                             <!-- Fin formulario -->
                         </div>

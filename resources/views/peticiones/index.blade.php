@@ -2,7 +2,19 @@
 @section('content')
 
     <div class="container my-5">
-        <h3 class="fw-bold h3">Nuestras peticiones</h3>
+        <h3 class="fw-bold h3">Nuestras peticiones</h3> <span> Ordenar peticiones por categroía: </span>
+
+        <form method="GET" action="{{ route('peticiones.index') }}">
+            @csrf
+            <select name="categoria" onchange="this.form.submit()">
+                <option value="" disabled selected>Selecciona una categoría</option>
+                @foreach($categoria as $cat)
+                    <option value="{{ $cat->id }}">
+                        {{ $cat->nombre }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
         <div class="container">
             <div class="row">
                 <!-- Peticiones -->
@@ -10,7 +22,8 @@
                     <div class="col-lg-8 col-sm-12">
                         <div class="card my-3">
                             <div class="card-body d-flex flex-column flex-sm-row">
-                                <img src="{{$contenido->file->file_path}}" alt style="width:300px; height:400px"
+                                <img src="{{asset('/peticiones\/').$contenido->file->file_path}}" alt width="500px"
+                                     height="300px"
                                      class="img-fluid col-12 col-sm-4 rounded-2 me-3 mb-3 mb-sm-0">
                                 <div>
                                     <h5 class="card-title"><?= $contenido['titulo'] ?></h5>
