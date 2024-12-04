@@ -14,11 +14,10 @@
                             <!-- Formulario -->
                             <form action="{{ route('peticiones.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-
                                 <div class="mb-3">
                                     <label for="titulo" class="form-label fw-bold">Título de la petición</label>
                                     <input type="text" name="titulo" class="form-control @error('titulo') is-invalid @enderror"
-                                           placeholder="Escribe el título" required  id="validationserver01">
+                                           placeholder="Escribe el título"  id="validationserver01">
                                     @error('titulo')
                                     <div class="alert alert-danger">{{$message}}</div>
                                     @enderror
@@ -26,7 +25,7 @@
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label fw-bold">Descripción</label>
                                     <textarea id="descripcion" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" rows="4"
-                                              placeholder="Describe la petición" required ></textarea>
+                                              placeholder="Describe la petición" ></textarea>
                                     @error('descripcion')
                                     <div class="alert alert-danger">{{$message}}</div>
                                     @enderror
@@ -57,7 +56,6 @@
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-danger">Crear petición</button>
                                 </div>
-
                             </form>
                             <!-- Fin formulario -->
                         </div>

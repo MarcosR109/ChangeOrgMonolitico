@@ -1,12 +1,11 @@
 @extends('layouts.public')
 @section('content')
-
     <div class="container my-5">
-        <h3 class="fw-bold h3">Nuestras peticiones</h3> <span> Ordenar peticiones por categroía: </span>
-
-        <form method="GET" action="{{ route('peticiones.index') }}">
+        <h3 class="fw-bold h3">Nuestras peticiones</h3>
+        <span class="h4">Ordenar peticiones por categoría: </span>
+        <form method="GET" action="{{ route('peticiones.index') }}" class="form">
             @csrf
-            <select name="categoria" onchange="this.form.submit()">
+            <select name="categoria" onchange="this.form.submit()" class="form-select w-25">
                 <option value="" disabled selected>Selecciona una categoría</option>
                 @foreach($categoria as $cat)
                     <option value="{{ $cat->id }}">
@@ -26,8 +25,11 @@
                                      height="300px"
                                      class="img-fluid col-12 col-sm-4 rounded-2 me-3 mb-3 mb-sm-0">
                                 <div>
+
                                     <h5 class="card-title"><?= $contenido['titulo'] ?></h5>
                                     <p class="card-text"><?= $contenido['descripcion'] ?></p>
+                                    <span class="text-muted text-gray w-50"><p><b>Únete a {{$contenido->firmantes}} personas que ya han firmado esta petición</b></p></span>
+
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex align-items-center mt-5">
                                             <img src="https://via.placeholder.com/40" class="rounded-circle me-2"

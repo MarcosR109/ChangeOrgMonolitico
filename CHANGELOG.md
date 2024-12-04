@@ -1,3 +1,4 @@
+
 # Release Notes
 
 ## [Unreleased](https://github.com/laravel/laravel/compare/v10.3.3...10.x)
