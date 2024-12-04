@@ -23,13 +23,11 @@
                             <div class="card-body d-flex flex-column flex-sm-row">
                                 <img src="{{asset('/peticiones\/').$contenido->file->file_path}}" alt width="500px"
                                      height="300px"
-                                     class="img-fluid col-12 col-sm-4 rounded-2 me-3 mb-3 mb-sm-0">
+                                     class="img-fluid col-12 col-sm-4 rounded-2 me-3 mb-3 mb-sm-0 rounded-3">
                                 <div>
-
                                     <h5 class="card-title"><?= $contenido['titulo'] ?></h5>
                                     <p class="card-text"><?= $contenido['descripcion'] ?></p>
                                     <span class="text-muted text-gray w-50"><p><b>Únete a {{$contenido->firmantes}} personas que ya han firmado esta petición</b></p></span>
-
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex align-items-center mt-5">
                                             <img src="https://via.placeholder.com/40" class="rounded-circle me-2"

@@ -62,11 +62,9 @@ class PeticioneController extends Controller
             $peticione->save();
             return view('peticiones.index', compact('content', "categoria"));
         }
-        $error = "Petición ya firmada";
+        $error = "Ya has firmado esta petición";
         $content = $peticione->all();
         return back()->withErrors($error)->withInput();
-
-
     }
 
 
@@ -78,7 +76,6 @@ class PeticioneController extends Controller
             $categoria = Categoria::all();
             $content = Peticione::query()->where('user_id', '=', $id)->get();
             if ($content) {
-
                 return view('peticiones.index', compact('content', "categoria"));
             } else {
                 $content = Peticione::all();
