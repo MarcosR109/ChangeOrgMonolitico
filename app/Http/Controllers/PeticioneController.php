@@ -43,9 +43,19 @@ class PeticioneController extends Controller
     Route::get('peticiones/edit/{id}', 'update')->name('peticiones.edit');
 });
 */
-    public function delete(Peticione $id)
+    public function delete($id=null)
     {
-        $this->delete($id);
+        try{
+        $id = Peticione::query()->findOrFail($id);
+        $id->file->delete();
+        $id->delete();
+        }
+        catch (\Exception $exception){
+            return back()->withErrors($exception->getMessage());
+        }
+        $categoria = Categoria::all();
+        $content = Peticione::all();
+        return redirect()->route('peticiones.index',compact('content','categoria'));
     }
 
     public function firmar($peticioneId)

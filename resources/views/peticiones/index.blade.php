@@ -36,6 +36,23 @@
                                             <a
                                                 href="{{route('peticiones.show',$contenido->id)}}"
                                                 class="text-primary mx-3">Saber más</a>
+                                            @if($contenido->user_id==Auth::id())
+                                                <form id="eliminarPeticion" action="{{ route('peticiones.delete', $contenido->id) }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="button"  class="btn btn-danger" onclick="this.form.submit()">Eliminar</button>
+                                                </form>
+                                                <form id="editarPeticion" action="{{ route('peticiones.edit', $contenido->id) }}" method="post">
+                                                    @csrf
+                                                    @method('update')
+                                                    <button type="button"  class="btn btn-danger mx-2" style="background-color: purple;
+                                                    border:1px solid purple" onclick="this.form.submit()">Editar</button>
+                                                </form>
+
+                                            @endif
+                                            @if($errors->any())
+                                                <div class="alert-danger p-3 m-2 rounded-2"><span>{{$errors->first()}}</span></div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
