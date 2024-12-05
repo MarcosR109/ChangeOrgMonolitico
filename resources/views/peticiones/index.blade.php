@@ -42,11 +42,11 @@
                                                     @method('delete')
                                                     <button type="button"  class="btn btn-danger" onclick="this.form.submit()">Eliminar</button>
                                                 </form>
-                                                <form id="editarPeticion" action="{{ route('peticiones.edit', $contenido->id) }}" method="post">
-                                                    @csrf
-                                                    @method('update')
-                                                    <button type="button"  class="btn btn-danger mx-2" style="background-color: purple;
-                                                    border:1px solid purple" onclick="this.form.submit()">Editar</button>
+                                                <form id="editarPeticion" action="{{ route('peticiones.edit', $contenido->id)}}" method="get">
+                                                    <button type="submit" class="btn btn-danger mx-2"
+                                                            style="background-color: purple; border:1px solid purple">
+                                                        Editar
+                                                    </button>
                                                 </form>
 
                                             @endif

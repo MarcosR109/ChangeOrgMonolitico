@@ -122,12 +122,23 @@ class PeticioneController extends Controller
     function create()
     {
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
-        return view('peticiones.create', compact('categorias'));
+        $content=[];
+        return view('peticiones.create', compact('categorias','content'));
+    }
+
+    public
+    function edit($request){
+        $categorias = Categoria::orderBy('nombre','asc')->get();
+        $content = Peticione::query()->findOrFail($request);
+        var_dump($content);
+        return view('peticiones.create',compact('categorias','content'));
     }
 
     public
     function update(Request $request)
     {
+        $categorias = Categoria::orderBy('nombre','asc')->get();
+        $content = Peticione::query()->findOrFail($request);
     }
 
     public
