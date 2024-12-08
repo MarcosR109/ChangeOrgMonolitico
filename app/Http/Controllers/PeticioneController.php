@@ -78,16 +78,11 @@ class PeticioneController extends Controller
     function listMine()
     {
         try {
-            $id = Auth::id();
-            $content = Peticione::query()->where('user_id', '=', $id)->get();
-            if ($content) {
-                return view('peticiones.listMine', compact('content'));
-            } else {
-                $content = Peticione::all();
-                return view('peticiones.index', compact('content'));
-            }
+            $user = Auth::user();
+            $content = $user->peticiones()->get();
+            return view('peticiones.listMine', compact('content'));
         } catch (\Exception $e) {
-            return back()->withErrors($e->getMessage())->withInput();
+            return back()->withErrors($e->getMessage());
         }
     }
 
