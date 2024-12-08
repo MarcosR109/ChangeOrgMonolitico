@@ -3,17 +3,6 @@
     <div class="container my-5">
         <h3 class="fw-bold h3">Nuestras peticiones</h3>
         <span class="h4">Ordenar peticiones por categoría: </span>
-        <form method="GET" action="{{ route('peticiones.index') }}" class="form">
-            @csrf
-            <select name="categoria" onchange="this.form.submit()" class="form-select w-25">
-                <option value="" disabled selected>Selecciona una categoría</option>
-                @foreach($categoria as $cat)
-                    <option value="{{ $cat->id }}">
-                        {{ $cat->nombre }}
-                    </option>
-                @endforeach
-            </select>
-        </form>
         <div class="container">
             <div class="row">
                 <!-- Peticiones -->
