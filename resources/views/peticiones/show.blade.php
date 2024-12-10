@@ -2,6 +2,10 @@
 @section('content')
     @use ("Illuminate\Support\Facades\Auth")
 
+     @if (session('error'))
+         <div class="container alert alert-danger">{{session('error')}}
+         </div>
+     @endif
     <div class="container my-5">
         <h3 class="fw-bold h3">Nuestras peticiones</h3>
         <div class="container">

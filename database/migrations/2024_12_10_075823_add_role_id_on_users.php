@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('files', function (Blueprint $table) {
-            $table->dropForeign(['peticione_id']);
-            $table->foreign('peticione_id')
-                ->references('id')
-                ->on('peticiones');
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedInteger('role_id')->default(0);
         });
     }
 
@@ -24,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('files', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

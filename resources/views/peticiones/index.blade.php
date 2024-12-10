@@ -37,7 +37,6 @@
                                                         Editar
                                                     </button>
                                                 </form>
-
                                             @endif
                                             @if($errors->any())
                                                 <div class="alert-danger p-3 m-2 rounded-2"><span>{{$errors->first()}}</span></div>
@@ -48,9 +47,13 @@
                             </div>
                         </div>
                     </div>
-
                 @endforeach   <!-- Repite el bloque de la card para más peticiones -->
             </div>
+            @if($content->links())
+                <div class="container m-3">
+                    {!! $content->links() !!}
+                </div>
+            @endif
 
 
             <!-- Temas destacados -->

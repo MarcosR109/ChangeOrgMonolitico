@@ -52,7 +52,11 @@
 
                 @endforeach   <!-- Repite el bloque de la card para más peticiones -->
             </div>
-
+            @if($content->links())
+                <div class="container m-3">
+                    {!! $content->links() !!}
+                </div>
+            @endif
 
             <!-- Temas destacados -->
             <div class="col-lg-4 col-sm-12">

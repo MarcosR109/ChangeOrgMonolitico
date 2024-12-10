@@ -21,9 +21,48 @@ class PeticioneController extends Controller
     public function index(Request $request)
     {
         //$categoriaId = $request->input('categoria');
-        $content = Peticione::all();
+        $content = Peticione::paginate(5);
         return view('peticiones.index', compact('content'));
     }
+
+    public
+    function show($id)
+    {
+        //$content = Peticione::query()->where('id', '=', $id)->get()->first();
+        try {
+            $content = Peticione::findOrFail($id);
+            return view('peticiones.show', compact('content'));
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+    }
+
+    public
+    function listMine()
+    {
+        try {
+            $user = Auth::user();
+            $content = $user->peticiones()->paginate(5);
+            return view('peticiones.listMine', compact('content'));
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
+    }
+
+
+    public
+    function peticionesFirmadas(Request $request)
+    {
+        try {
+            $usuario = Auth::user();
+            //$usuario = User::findOrFail($id);
+            $content = $usuario->firmas()->paginate(5);
+        } catch (\Exception $exception) {
+            return back()->withError($exception->getMessage())->withInput();
+        }
+        return view('peticiones.peticionesFirmadas', compact('content'));
+    }
+
 
     /*Route::controller(\App\Http\Controllers\PeticioneController::class)->group(function () {
     Route::get('peticiones/index', 'index')->name('peticiones.index');
@@ -41,15 +80,14 @@ class PeticioneController extends Controller
     public function delete($id = null)
     {
         try {
-            $id = Peticione::query()->findOrFail($id);
-            $id->file->delete();
-            $id->delete();
+            $peticion = Peticione::findOrFail($id);
+            $peticion->file->delete();
+            $peticion->delete();
         } catch (\Exception $exception) {
             return back()->withErrors($exception->getMessage());
         }
-        $categoria = Categoria::all();
-        $content = Peticione::all();
-        return redirect()->route('peticiones.index', compact('content', 'categoria'));
+        $content = Peticione::paginate(5);
+        return redirect()->route('peticiones.index', compact('content'));
     }
 
     public function firmar(Request $request, $id)
@@ -75,43 +113,6 @@ class PeticioneController extends Controller
 
 
     public
-    function listMine()
-    {
-        try {
-            $user = Auth::user();
-            $content = $user->peticiones()->get();
-            return view('peticiones.listMine', compact('content'));
-        } catch (\Exception $e) {
-            return back()->withErrors($e->getMessage());
-        }
-    }
-
-    public
-    function show($id)
-    {
-        //$content = Peticione::query()->where('id', '=', $id)->get()->first();
-        try {
-            $content = Peticione::findOrFail($id);
-            return view('peticiones.show', compact('content'));
-        } catch (\Exception $e) {
-            return back()->withErrors($e->getMessage())->withInput();
-        }
-    }
-
-    public
-    function peticionesFirmadas(Request $request)
-    {
-        try {
-            $id = Auth::id();
-            $usuario = User::findOrFail($id);
-            $content = $usuario->firmas;
-        } catch (\Exception $exception) {
-            return back()->withError($exception->getMessage())->withInput();
-        }
-        return view('peticiones.peticionesFirmadas', compact('content'));
-    }
-
-    public
     function create()
     {
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
@@ -119,20 +120,34 @@ class PeticioneController extends Controller
         return view('peticiones.create', compact('categorias'));
     }
 
-    /*public
-    function edit($request){
-        $categorias = Categoria::orderBy('nombre','asc')->get();
-        $content = Peticione::query()->findOrFail($request);
-        var_dump($content);
-        return view('peticiones.create',compact('categorias','content'));
+    public
+    function edit($id)
+    {
+        $content = Peticione::findOrFail($id);
+        $categorias = Categoria::all();
+        return view('peticiones.edit', compact('content', 'categorias'));
     }
 
     public
     function update(Request $request)
     {
-        $categorias = Categoria::orderBy('nombre','asc')->get();
-        $content = Peticione::query()->findOrFail($request);
-    }*/
+
+        $this->validate($request, [
+            'descripcion' => 'required',
+            'destinatario' => 'required',
+        ]);
+        $input = $request->all();
+        try {
+            $user = Auth::user();
+            $peticion = Peticione::findOrFail($request->id);
+            $peticion->descripcion = $input['descripcion'];
+            $peticion->destinatario = $input['destinatario'];
+            $peticion->save();
+            return redirect('/mispeticiones');
+        } catch (\Exception $exception) {
+            return back()->withError($exception->getMessage())->withInput();
+        }
+    }
 
     public
     function store(Request $request)

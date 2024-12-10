@@ -1,4 +1,3 @@
-
 @extends('layouts.public')
 @section('content')
     <div class="container my-5">
@@ -27,12 +26,18 @@
                                                 href="{{route('peticiones.show',$contenido->id)}}"
                                                 class="text-primary mx-3">Saber más</a>
                                             @if($contenido->user_id==Auth::id())
-                                                <form id="eliminarPeticion" action="{{ route('peticiones.delete', $contenido->id) }}" method="post">
+                                                <form id="eliminarPeticion"
+                                                      action="{{ route('peticiones.delete', $contenido->id) }}"
+                                                      method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="button"  class="btn btn-danger" onclick="this.form.submit()">Eliminar</button>
+                                                    <button type="button" class="btn btn-danger"
+                                                            onclick="this.form.submit()">Eliminar
+                                                    </button>
                                                 </form>
-                                                <form id="editarPeticion" action="{{ route('peticiones.edit', $contenido->id)}}" method="get">
+                                                <form id="editarPeticion"
+                                                      action="{{ route('peticiones.edit', $contenido->id)}}"
+                                                      method="get">
                                                     <button type="submit" class="btn btn-danger mx-2"
                                                             style="background-color: purple; border:1px solid purple">
                                                         Editar
@@ -41,7 +46,8 @@
 
                                             @endif
                                             @if($errors->any())
-                                                <div class="alert-danger p-3 m-2 rounded-2"><span>{{$errors->first()}}</span></div>
+                                                <div class="alert-danger p-3 m-2 rounded-2">
+                                                    <span>{{$errors->first()}}</span></div>
                                             @endif
                                         </div>
                                     </div>
@@ -52,8 +58,11 @@
 
                 @endforeach   <!-- Repite el bloque de la card para más peticiones -->
             </div>
-
-
+            @if($content->links())
+            <div class="container m-3">
+                {!! $content->links() !!}
+            </div>
+            @endif
             <!-- Temas destacados -->
             <div class="col-lg-4 col-sm-12">
                 <h4 class="fw-bold">Temas destacados</h4>
