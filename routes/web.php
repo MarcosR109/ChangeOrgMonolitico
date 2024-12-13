@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('admin')-> controller(\App\Http\Controllers\Admin\AdminPeticionesController::class)->group(function () {
+Route::middleware('admin')->controller(\App\Http\Controllers\Admin\AdminPeticionesController::class)->group(function () {
     Route::get('admin', 'index')->name('admin.home');
     Route::get('admin/peticiones/index', 'index')->name('adminpeticiones.index');
     Route::get('admin/peticiones/{id}', 'show')->name('adminpeticiones.show');
@@ -46,6 +46,16 @@ Route::middleware('admin')-> controller(\App\Http\Controllers\Admin\AdminPeticio
     Route::delete('admin/peticiones/{id}', 'delete')->name('adminpeticiones.delete');
     Route::put('admin/peticiones/{id}', 'update')->name('adminpeticiones.update');
     Route::put('admin/peticiones/estado/{id}', 'cambiarEstado')->name('adminpeticiones.estado');
+});
+
+Route::middleware('admin')->controller(\App\Http\Controllers\Admin\AdminUsersController::class)->group(function () {
+    //Route::get('admin', 'index')->name('admin.home');
+    Route::get('admin/users/index', 'index')->name('adminusers.index');
+    Route::get('admin/users/{id}', 'show')->name('adminusers.show');
+    Route::get('admin/user/add', 'create')->name('adminusers.create');
+    Route::get('admin/users/edit/{id}', 'edit')->name('adminusers.edit');
+    Route::post('admin/user', 'store')->name('adminusers.store');
+    Route::delete('admin/user/{id}', 'delete')->name('adminusers.delete');
 });
 //follow the same for categories and users
 

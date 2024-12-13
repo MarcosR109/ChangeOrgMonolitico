@@ -81,13 +81,17 @@ class PeticioneController extends Controller
     {
         try {
             $peticion = Peticione::findOrFail($id);
-            $peticion->file->delete();
+            if ($peticion->firmas()->count() > 0) {
+                return back()->withErrors('No se puede eliminar, la petición está firmada.');
+            }
+            if ($peticion->file) {
+                $peticion->file->delete();
+            }
             $peticion->delete();
+            return redirect()->route('peticiones.index');
         } catch (\Exception $exception) {
-            return back()->withErrors($exception->getMessage());
+            return back()->withErrors('Ocurrió un error al intentar eliminar la petición.');
         }
-        $content = Peticione::paginate(5);
-        return redirect()->route('peticiones.index', compact('content'));
     }
 
     public function firmar(Request $request, $id)

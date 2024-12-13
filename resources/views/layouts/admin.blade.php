@@ -47,12 +47,14 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <h4 class="text-center py-3">Admin Panel</h4>
-    <a href="">Dashboard</a>
-    <a href="">Gestionar Peticiones</a>
+    <a href="{{route('adminpeticiones.index')}}">Peticiones</a>
     <a href="">Categorías</a>
-    <a href="">Usuarios</a>
-    <a href="">Configuración</a>
-    <a href="" onclick="return confirm('¿Cerrar sesión?')">Cerrar Sesión</a>
+    <a href="{{route('adminusers.index')}}">Usuarios</a>
+    <a href="{{route('logout')}}"
+       onclick="event.preventDefault();document.getElementById('logout').submit();">Cerrar sesión</a>
+    <form method="POST" id="logout" action="{{route('logout')}}">
+        @csrf
+    </form>
 </div>
 
 <!-- Content Wrapper -->
