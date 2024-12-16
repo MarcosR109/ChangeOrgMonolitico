@@ -68,8 +68,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="">Volver al Sitio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Cerrar Sesión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.home') }}">Volver a home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>

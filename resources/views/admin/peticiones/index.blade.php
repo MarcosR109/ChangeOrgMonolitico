@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 @section('content')
     <div class="table-responsive">
+        @if($errors->any())
+            <div class="alert-danger p-3 m-2 rounded-2">
+                <span>{{$errors->first()}}</span></div>
+        @endif
         <table class="table table-striped">
             <thead>
             <tr>
@@ -41,6 +45,8 @@
                                     onclick="return confirm('¿Estás seguro de eliminar esta petición?')">Eliminar
                             </button>
                         </form>
+                        <a href="{{route('adminpeticiones.show',$contenido->id)}}"
+                           class="btn btn-success btn-sm">Ver</a>
                     </td>
                 </tr>
             @empty
@@ -49,5 +55,7 @@
                 </tr>
                 @endforelse
                 </tbody>
+
         </table>
+        <a href="{{route('adminpeticiones.create')}}">Crear una nueva petición</a>
 @endsection
