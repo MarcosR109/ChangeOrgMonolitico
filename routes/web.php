@@ -58,7 +58,15 @@ Route::middleware('admin')->controller(\App\Http\Controllers\Admin\AdminUsersCon
     Route::delete('admin/user/{id}', 'delete')->name('adminusers.delete');
 });
 //follow the same for categories and users
-
+Route::middleware('admin')->controller(\App\Http\Controllers\Admin\AdminCategoriasController::class)->group(function () {
+    //Route::get('admin', 'index')->name('admin.home');
+    Route::get('admin/categorias/index', 'index')->name('admincategorias.index');
+    Route::get('admin/categorias/{id}', 'show')->name('admincategorias.show');
+    Route::get('admin/categorias/add', 'create')->name('admincategorias.create');
+    Route::get('admin/categorias/edit/{id}', 'edit')->name('admincategorias.edit');
+    Route::post('admin/categoria', 'store')->name('admincategorias.store');
+    Route::delete('admin/categoria/{id}', 'delete')->name('admincategorias.delete');
+});
 
 require __DIR__ . '/auth.php';
 

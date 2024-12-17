@@ -48,7 +48,7 @@
 <div class="sidebar">
     <h4 class="text-center py-3">Admin Panel</h4>
     <a href="{{route('adminpeticiones.index')}}">Peticiones</a>
-    <a href="">Categorías</a>
+    <a href="{{route('admincategorias.index')}}">Categorías</a>
     <a href="{{route('adminusers.index')}}">Usuarios</a>
     <a href="{{route('logout')}}"
        onclick="event.preventDefault();document.getElementById('logout').submit();">Cerrar sesión</a>
