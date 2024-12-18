@@ -55,6 +55,7 @@ Route::middleware('admin')->controller(\App\Http\Controllers\Admin\AdminUsersCon
     Route::get('admin/user/add', 'create')->name('adminusers.create');
     Route::get('admin/users/edit/{id}', 'edit')->name('adminusers.edit');
     Route::post('admin/user', 'store')->name('adminusers.store');
+    Route::put('admin/user/update', 'update')->name('adminusers.update');
     Route::delete('admin/user/{id}', 'delete')->name('adminusers.delete');
 });
 //follow the same for categories and users
@@ -62,8 +63,9 @@ Route::middleware('admin')->controller(\App\Http\Controllers\Admin\AdminCategori
     //Route::get('admin', 'index')->name('admin.home');
     Route::get('admin/categorias/index', 'index')->name('admincategorias.index');
     Route::get('admin/categorias/{id}', 'show')->name('admincategorias.show');
-    Route::get('admin/categorias/add', 'create')->name('admincategorias.create');
+    Route::get('admin/categoria/add', 'create')->name('admincategorias.create');
     Route::get('admin/categorias/edit/{id}', 'edit')->name('admincategorias.edit');
+    Route::put('admin/categoria/update', 'update')->name('admincategorias.update');
     Route::post('admin/categoria', 'store')->name('admincategorias.store');
     Route::delete('admin/categoria/{id}', 'delete')->name('admincategorias.delete');
 });

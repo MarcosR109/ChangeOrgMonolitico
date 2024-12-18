@@ -29,8 +29,8 @@ class AdminCategoriasController extends Controller
 
     public function edit($id)
     {
-        $categorias = Categoria::all();
-        return view('admin.categorias.edit', compact('categorias'));
+        $content = Categoria::findOrFail($id);
+        return view('admin.categorias.edit', compact('content'));
     }
 
     public function update(Request $request)
@@ -50,7 +50,7 @@ class AdminCategoriasController extends Controller
     {
         try {
             $categoria = Categoria::findOrFail($id);
-            if ($categoria->peticiones()) {
+            if ($categoria->peticiones()->count() > 0) {
                 return back()->withErrors('La categoría tiene peticiones asociadas.');
             }
             $categoria->delete();
@@ -62,8 +62,7 @@ class AdminCategoriasController extends Controller
 
     public function create()
     {
-        $categorias = Categoria::all();
-        return view('admin.categorias.add', compact('categorias'));
+        return view('admin.categorias.add');
     }
 
     public
@@ -76,12 +75,12 @@ class AdminCategoriasController extends Controller
         try {
             $categorias = Categoria::all();
             foreach ($categorias as $categoria) {
-                if ($categoria->nombre == $input['nombre']) {
+                if ($categoria->nombre == $input) {
                     return back()->withErrors('La categoría ya existe');
                 }
             }
             $category = new Categoria();
-            $category->nombre = $input['nombre'];
+            $category->nombre = $input;
             $category->save();
             return redirect('admin/categorias/index');
         } catch (\Exception $exception) {

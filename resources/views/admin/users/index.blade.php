@@ -2,7 +2,7 @@
 @section('content')
     <div class="table-responsive">
         @if($errors->any())
-            <div class="alert-danger p-3 m-2 rounded-2">
+            <div class="alert alert-danger p-3 m-2 rounded-2">
                 <span>{{$errors->first()}}</span></div>
         @endif
         <table class="table table-striped">
@@ -29,7 +29,8 @@
                                     onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar
                             </button>
                         </form>
-                        <a href="{{route('adminusers.show',$contenido->id)}}"  class="btn btn-success btn-sm">Ver</a>
+                        <a href="{{ route('adminusers.edit', $contenido->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{{ route('adminusers.show',$contenido->id)}}"  class="btn btn-success btn-sm">Ver</a>
                     </td>
                 </tr>
                 @endif

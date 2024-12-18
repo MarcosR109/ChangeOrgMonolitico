@@ -7,54 +7,23 @@
             @if(session('error'))
                 <div class="alert alert-danger">{{session('error')}}</div>
             @endif
+            @if($errors->any())
+                <div class="alert alert-danger p-3 m-2 rounded-2"><span>{{$errors->first()}}</span></div>
+            @endif
             <div class="row">
                 <div class="col-lg-8 col-sm-12 mx-auto">
                     <div class="card my-3">
                         <div class="card-body">
                             <!-- Formulario -->
-                            <form action="{{ route('adminusers.store') }}" method="POST"
+                            <form action="{{ route('admincategorias.store') }}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="titulo" class="form-label fw-bold">Nuevo usuario</label>
-                                    <input type="text" name="titulo"
-                                           class="form-control @error('titulo') is-invalid @enderror"
+                                    <label for="titulo" class="form-label fw-bold">Nueva categoría</label>
+                                    <input type="text" name="nombre"
+                                           class="form-control @error('nombre') is-invalid @enderror"
                                            placeholder="Escribe el título" id="validationserver01">
-                                    @error('titulo')
-                                    <div class="alert alert-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="usuario" class="form-label fw-bold">Usuario</label>
-                                    <input type="text" id="usuario" name="usuario"
-                                           class="form-control @error('usuario') is-invalid @enderror"
-                                           placeholder="Nombre de usuario">
-                                    <div class="alert alert-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="destinatario" class="form-label fw-bold">Email</label>
-                                    <input type="text" id="destinatario" name="destinatario"
-                                           class="form-control @error('destinatario') is-invalid @enderror"
-                                           placeholder="Destinatarios">
-                                    @error('destinatario')
-                                    <div class="alert alert-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="categoria" class="form-label fw-bold">Categoría</label>
-                                    <select type="select" id="categoria" name="categoria" class="form-control">
-                                        @foreach($categorias as $cat)
-                                            <option value={{$cat['id']}}>{{$cat['nombre']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="foto" class="form-label fw-bold">Fotografía</label>
-                                    <input type="file" id="foto" name="foto"
-                                           class="form-control @error('foto') is-invalid @enderror"
-                                           placeholder="Foto" aria-required="true">
-                                    @error('foto')
+                                    @error('nombre')
                                     <div class="alert alert-danger">{{$message}}</div>
                                     @enderror
                                 </div>

@@ -5,6 +5,7 @@
             <div class="alert-danger p-3 m-2 rounded-2">
                 <span>{{$errors->first()}}</span></div>
         @endif
+
         <table class="table table-striped">
             <thead>
             <tr>

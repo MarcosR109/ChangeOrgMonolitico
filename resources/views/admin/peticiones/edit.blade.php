@@ -13,7 +13,7 @@
                     <div class="card my-3">
                         <div class="card-body">
                             <!-- Formulario -->
-                            <form action="{{route('peticiones.update',$content->id)}}" method="post"
+                            <form action="{{route('adminpeticiones.update',$content->id)}}" method="post"
                                   enctype="multipart/form-data">
                                 @csrf
                                 @method('put')
@@ -21,7 +21,7 @@
                                     <label for="titulo" class="form-label fw-bold">Título de la petición</label>
                                     <input type="text" name="titulo"
                                            class="form-control @error('titulo') is-invalid @enderror"
-                                           placeholder="{{$content->titulo}}" id="validationserver01">
+                                           placeholder="{{$content->titulo}}" id="validationserver01" disabled>
                                     @error('titulo')
                                     <div class="alert alert-danger">{{$message}}</div>
                                     @enderror
@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="categoria" class="form-label fw-bold">Categoría</label>
-                                    <select type="select" id="categoria" name="categoria" class="form-control">
+                                    <select type="select" id="categoria" name="categoria" class="form-control" disabled>
                                         @foreach($categorias as $cat)
                                             <option value={{$cat['id']}}>{{$cat['nombre']}}</option>
                                         @endforeach
@@ -51,7 +51,7 @@
                                     <label for="foto" class="form-label fw-bold">Fotografía</label>
                                     <input type="file" id="foto" name="foto"
                                            class="form-control @error('foto') is-invalid @enderror"
-                                           placeholder="Foto" aria-required="true">
+                                           placeholder="Foto" aria-required="true" disabled>
                                     @error('foto')
                                     <div class="alert alert-danger">{{$message}}</div>
                                     @enderror

@@ -135,7 +135,6 @@ class PeticioneController extends Controller
     public
     function update(Request $request)
     {
-
         $this->validate($request, [
             'descripcion' => 'required',
             'destinatario' => 'required',

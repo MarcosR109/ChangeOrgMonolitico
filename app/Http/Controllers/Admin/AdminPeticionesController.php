@@ -71,13 +71,14 @@ class AdminPeticionesController extends Controller
     {
         try {
             $peticion = Peticione::findOrFail($id);
-            if ($peticion->firmas()) {
-                $peticion->firmas()->delete();
+            if ($peticion->firmas()->count()>0) {
+                $peticion->firmas()->detach();
             }
             if ($peticion->file) {
                 $peticion->file->delete();
             }
             $peticion->delete();
+            return redirect('admin/peticiones/index');
         } catch (\Exception $exception) {
             return back()->withErrors($exception->getMessage());
         }
