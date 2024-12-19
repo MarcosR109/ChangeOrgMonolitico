@@ -26,8 +26,11 @@ class AdminUsersController extends Controller
     {
         try {
             $usuario = User::findOrFail($id);
-            if($usuario->peticiones()->count() > 0){
-               return back()->withErrors('El usuario ha firmado peticiones');
+            if($usuario->peticiones()->count()>0){
+               return back()->withErrors('El usuario ha tiene peticiones asociadas.');
+            }
+            if($usuario->firmas()->count()>0){
+                return back()->withErrors('El usuario ha firmado peticiones.');
             }
             $usuario->delete();
             return back();

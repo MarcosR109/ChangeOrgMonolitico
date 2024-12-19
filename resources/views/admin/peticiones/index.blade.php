@@ -59,7 +59,6 @@
                 </tr>
                 @endforelse
                 </tbody>
-
         </table>
         <a href="{{route('adminpeticiones.create')}}">Crear una nueva petición</a>
 @endsection

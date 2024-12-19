@@ -56,7 +56,6 @@ class AdminPeticionesController extends Controller
         ]);*/
         $input = $request->all();
         try {
-            $user = Auth::user();
             $peticion = Peticione::findOrFail($request->id);
             $peticion->descripcion = $input['descripcion'];
             $peticion->destinatario = $input['destinatario'];
@@ -89,6 +88,7 @@ class AdminPeticionesController extends Controller
         $categorias = Categoria::all();
         return view('admin.peticiones.add',compact('categorias'));
     }
+
     public
     function store(Request $request)
     {
@@ -154,6 +154,7 @@ class AdminPeticionesController extends Controller
         }
         return 1;
     }
+
     public function cambiarEstado($id)
     {
         try {

@@ -50,7 +50,7 @@ class AdminCategoriasController extends Controller
     {
         try {
             $categoria = Categoria::findOrFail($id);
-            if ($categoria->peticiones()->count() > 0) {
+            if ($categoria->peticiones->count()>0) {
                 return back()->withErrors('La categoría tiene peticiones asociadas.');
             }
             $categoria->delete();
