@@ -2,7 +2,7 @@
 @section('content')
     <div class="table-responsive">
         @if($errors->any())
-            <div class="alert-danger p-3 m-2 rounded-2">
+            <div class="alert alert-danger p-3 m-2 rounded-2">
                 <span>{{$errors->first()}}</span></div>
         @endif
 

@@ -50,16 +50,17 @@ class AdminPeticionesController extends Controller
 
     public function update(Request $request)
     {
-        $this->validate($request, [
+        /*$this->validate($request, [
             'descripcion' => 'required',
             'destinatario' => 'required',
-        ]);
+        ]);*/
         $input = $request->all();
         try {
             $user = Auth::user();
             $peticion = Peticione::findOrFail($request->id);
             $peticion->descripcion = $input['descripcion'];
             $peticion->destinatario = $input['destinatario'];
+            $peticion->categoria_id = $input['categoria'];
             $peticion->save();
             return redirect('admin/peticiones/index');
         } catch (\Exception $exception) {
@@ -72,7 +73,7 @@ class AdminPeticionesController extends Controller
         try {
             $peticion = Peticione::findOrFail($id);
             if ($peticion->firmas()->count()>0) {
-                $peticion->firmas()->detach();
+                return back()->withError("La petición está firmada");
             }
             if ($peticion->file) {
                 $peticion->file->delete();

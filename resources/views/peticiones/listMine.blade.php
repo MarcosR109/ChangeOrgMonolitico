@@ -5,6 +5,10 @@
         <span class="h4">Ordenar peticiones por categoría: </span>
         <div class="container">
             <div class="row">
+                @if($errors->any())
+                    <div class="alert-danger p-3 m-2 rounded-2">
+                        <span>{{$errors->first()}}</span></div>
+                @endif
                 <!-- Peticiones -->
                 @foreach($content as $contenido)
                     <div class="col-lg-8 col-sm-12">
@@ -45,10 +49,7 @@
                                                 </form>
 
                                             @endif
-                                            @if($errors->any())
-                                                <div class="alert-danger p-3 m-2 rounded-2">
-                                                    <span>{{$errors->first()}}</span></div>
-                                            @endif
+
                                         </div>
                                     </div>
                                 </div>

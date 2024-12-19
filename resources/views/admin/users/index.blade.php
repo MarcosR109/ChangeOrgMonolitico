@@ -21,6 +21,8 @@
                     <td>{{ $contenido->name }}</td>
                     <td>{{ $contenido->email}}</td>
                     <td>
+                        <a href="{{ route('adminusers.edit', $contenido->id) }}" class="btn btn-warning btn-sm">Editar</a>
+
                         <form action="{{ route('adminusers.delete', $contenido->id) }}" method="POST"
                               class="d-inline">
                             @csrf
@@ -29,8 +31,7 @@
                                     onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar
                             </button>
                         </form>
-                        <a href="{{ route('adminusers.edit', $contenido->id) }}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{{ route('adminusers.show',$contenido->id)}}"  class="btn btn-success btn-sm">Ver</a>
+                           <a href="{{ route('adminusers.show',$contenido->id)}}"  class="btn btn-success btn-sm">Ver</a>
                     </td>
                 </tr>
                 @endif

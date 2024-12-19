@@ -41,8 +41,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="categoria" class="form-label fw-bold">Categoría</label>
-                                    <select type="select" id="categoria" name="categoria" class="form-control" disabled>
+                                    <select type="select" id="categoria" name="categoria" class="form-control">
                                         @foreach($categorias as $cat)
+                                            @if($cat->id == $content->categoria_id)
+                                                <option selected value={{$cat['id']}}>{{$cat['nombre']}}</option>
+                                            @endif
                                             <option value={{$cat['id']}}>{{$cat['nombre']}}</option>
                                         @endforeach
                                     </select>
